@@ -240,22 +240,6 @@ algoritmo mi_Algoritmo{
 		imprimir i;
 		i = i + 1;
 	}
-	
-	imprimir "Bucle para";
-	para j = 0 hasta 40 conpaso 10 {
-		Imprimir j;
-	}
-  // Estructura if elif y else
-  
-	si 1 == 1 entonces {
-		imprimir "Verdadero";
-    }
-	sinosi 2 == 'H' entonces {
-		imprimir "Imposible";
-	}
-  sino{
-    imprimir "Else";
-  }	
 }
 
 '''
@@ -274,7 +258,7 @@ algoritmo mi_Algoritmo{
 '''
 
 # Give the lexer some input
-lexer.input(data2)
+lexer.input(data1)
 
 data_tokens = []
 # Tokenize
