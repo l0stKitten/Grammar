@@ -1,0 +1,39 @@
+digraph grafico {
+	0 [label=E]
+	1 [label="E'"]
+	0 -> 1
+	2 [label=T]
+	0 -> 2
+	2 [label=T]
+	3 [label="T'"]
+	2 -> 3
+	4 [label=F]
+	2 -> 4
+	4 [label=F]
+	5 [label=id]
+	4 -> 5
+	3 [label="T'"]
+	6 [label=ep]
+	3 -> 6
+	1 [label="E'"]
+	7 [label="E'"]
+	1 -> 7
+	8 [label=T]
+	1 -> 8
+	9 [label="+"]
+	1 -> 9
+	8 [label=T]
+	10 [label="T'"]
+	8 -> 10
+	11 [label=F]
+	8 -> 11
+	11 [label=F]
+	12 [label=id]
+	11 -> 12
+	10 [label="T'"]
+	13 [label=ep]
+	10 -> 13
+	7 [label="E'"]
+	14 [label=ep]
+	7 -> 14
+}
