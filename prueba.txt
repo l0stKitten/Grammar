@@ -1,0 +1,3 @@
+algoritmo data5{
+	imprimir "Hola Mundo";
+}

@@ -7,7 +7,7 @@ import time
 class Runner:
   #global stack, tokens, root
   def __init__(self, tokens):
-    self.syntax_table = pd.read_csv("latabla.csv", index_col=0)
+    self.syntax_table = pd.read_csv("tablasuper.csv", index_col=0)
     
     self.terminales = list( self.syntax_table.columns.values )[:-1]
     
@@ -65,7 +65,7 @@ class Runner:
       adyacentes = n.children
 
       if n.symbol == elem and len(adyacentes) == 0 and n.lexeme != 'hoja':
-        print('Encontrado: ', n.symbol)
+        #print('Encontrado: ', n.symbol)
         return n
   
       for i in adyacentes:
@@ -95,7 +95,7 @@ class Runner:
         print('Hay que buscar ', buscar.value)
         tree_nodo_temp = self.dfs(root, buscar.value)
         self.grafico.node(str(tree_nodo_temp.id), tree_nodo_temp.symbol)
-        print(tree_nodo_temp.symbol)
+        print(tree_nodo_temp.id, " ", tree_nodo_temp.symbol ,"hijo -> ep")
         tree_nodo =  node_parser('ep', 'hoja', [], tree_nodo_temp, 1)
         self.grafico.node(str(tree_nodo.id), tree_nodo.symbol)
         tree_nodo_temp.children.insert(0, tree_nodo)
@@ -106,10 +106,10 @@ class Runner:
       elem = elem[::-1]
   
       buscar = stack.pop()
-      print('Hay que buscar ', buscar.value)
+      #print('Hay que buscar ', buscar.value)
       tree_nodo_temp = self.dfs(root, buscar.value)
       self.grafico.node(str(tree_nodo_temp.id), tree_nodo_temp.symbol)
-      print(tree_nodo_temp.symbol)
+      print(tree_nodo_temp.id, " ", tree_nodo_temp.symbol, "hijos:")
       
       for i in elem:
         is_term = self.is_terminal(i)
@@ -123,10 +123,12 @@ class Runner:
         if is_term == True:
           tree_nodo =  node_parser(i, 'hoja', [], tree_nodo_temp, 1)
           self.grafico.node(str(tree_nodo.id), tree_nodo.symbol)
+          
         else:
           tree_nodo =  node_parser(i, 'prueba', [], tree_nodo_temp, 1)
           self.grafico.node(str(tree_nodo.id), tree_nodo.symbol)
-        
+
+        print(tree_nodo.id, " ", tree_nodo.symbol, "padre: ", tree_nodo.father.id, " ", tree_nodo.father.symbol)
         tree_nodo_temp.children.append(tree_nodo)
         self.grafico.edge(str(tree_nodo_temp.id), str(tree_nodo.id), ordering="out")
   
@@ -136,9 +138,9 @@ class Runner:
   def run(self):
     print(self.tokens)
     while True:
-      print("\nITERATION ...")
-      self.print_stack(self.stack)
-      self.print_input()
+      #print("\nITERATION ...")
+      #self.print_stack(self.stack)
+      #self.print_input()
       
       print(self.stack[-1].value, '-', self.tokens[0]['type'])
       if self.stack[-1].value == '$' and self.tokens[0]['type'] == '$':

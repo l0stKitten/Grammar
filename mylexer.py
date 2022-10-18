@@ -217,14 +217,7 @@ algoritmo mi_Algoritmo{
 data1 = '''
 
 algoritmo mi_Algoritmo{
-	definir a, b, c como entero;
-	//definir z como caracter entero logico real
-	a = 3;
-	b = 5;
-	c = a + b;
-	imprimir "El valor de c es: ", c;
-	leer c;
-	imprimir "El valor leido en c es: ", c;	
+	imprimir "Hola mundo"
 }
 
 '''
@@ -256,9 +249,32 @@ algoritmo mi_Algoritmo{
     miFuncion1(c);
 }
 '''
+data4 = '''
+
+algoritmo mi_Algoritmo{
+	si 1 == 1 entonces {
+		imprimir "Verdadero";
+  }
+	sinosi 2 == 'H' entonces {
+		imprimir "Imposible";
+	}
+  sino{
+    imprimir "Else";
+  }
+  id = 1 + 2;
+}
+'''
+
+data5 = '''
+
+algoritmo mi_Algoritmo{
+	definir x como entero;
+  x = 5;
+}
+'''
 
 # Give the lexer some input
-lexer.input(data1)
+lexer.input(data4)
 
 data_tokens = []
 # Tokenize
