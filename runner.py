@@ -28,8 +28,9 @@ class Runner:
             {'type':'$', 'lexeme':'$', 'line':1}
         ]'''
     self.tokens = tokens
-
-    self.root = node_parser( self.stack[-1].value, self.tokens[0]['lexeme'], [] )
+    self.root = node_parser( self.stack[-1].value, 'nodo', [], None, None, self.tokens[0]['lexeme'] )
+    self.lex = self.tokens[0]['lexeme']
+    self.line = self.tokens[0]['line']
 
     self.grafico = graphviz.Digraph('graficoGRAMAR')
     
@@ -64,7 +65,7 @@ class Runner:
       #print(n.symbol, "->", end=" ")
       adyacentes = n.children
 
-      if n.symbol == elem and len(adyacentes) == 0 and n.lexeme != 'hoja':
+      if n.symbol == elem and len(adyacentes) == 0 and n.type != 'hoja':
         #print('Encontrado: ', n.symbol)
         return n
   
@@ -77,13 +78,14 @@ class Runner:
       grafico.edge(str(i.father.symbol), str(i.symbol))
 
   def update(self, stack_value, token_type, stack, root):
+    #print("/////////////// lexeme: ", lex)
     #print("-----------------------------------")
-    print(stack_value, "----------", token_type)
+    #print(stack_value, "----------", token_type)
     #print("-----------------------------------")
     production = self.syntax_table.loc[stack_value][token_type]
-    print(production, "///////")
+    #print(production, "///////")
     if self.isNaN(production):
-      print("Error sintáctico: no hay con qué reemplazar")
+      print("Error sintáctico: no se halla la producción")
       return
     else:
       elem = production.split(" ")
@@ -92,11 +94,11 @@ class Runner:
         buscar = stack.pop()
 
         #--------------------Añadir ep en el árbol
-        print('Hay que buscar ', buscar.value)
+        #print('Hay que buscar ', buscar.value)
         tree_nodo_temp = self.dfs(root, buscar.value)
         self.grafico.node(str(tree_nodo_temp.id), tree_nodo_temp.symbol)
-        print(tree_nodo_temp.id, " ", tree_nodo_temp.symbol ,"hijo -> ep")
-        tree_nodo =  node_parser('ep', 'hoja', [], tree_nodo_temp, 1)
+        #print(tree_nodo_temp.id, " ", tree_nodo_temp.symbol ,"hijo -> ep")
+        tree_nodo =  node_parser('ep', 'hoja', [], tree_nodo_temp, 1, 'ep')
         self.grafico.node(str(tree_nodo.id), tree_nodo.symbol)
         tree_nodo_temp.children.insert(0, tree_nodo)
         self.grafico.edge(str(tree_nodo_temp.id), str(tree_nodo.id), ordering="out")
@@ -109,7 +111,7 @@ class Runner:
       #print('Hay que buscar ', buscar.value)
       tree_nodo_temp = self.dfs(root, buscar.value)
       self.grafico.node(str(tree_nodo_temp.id), tree_nodo_temp.symbol)
-      print(tree_nodo_temp.id, " ", tree_nodo_temp.symbol, "hijos:")
+      #print(tree_nodo_temp.id, " ", tree_nodo_temp.symbol, "hijos:")
       
       for i in elem:
         is_term = self.is_terminal(i)
@@ -121,35 +123,44 @@ class Runner:
       for i in elem:
         is_term = self.is_terminal(i)
         if is_term == True:
-          tree_nodo =  node_parser(i, 'hoja', [], tree_nodo_temp, 1)
+          tree_nodo =  node_parser(i, 'hoja', [], tree_nodo_temp, self.line, 'oo')
           self.grafico.node(str(tree_nodo.id), tree_nodo.symbol)
           
         else:
-          tree_nodo =  node_parser(i, 'prueba', [], tree_nodo_temp, 1)
+          tree_nodo =  node_parser(i, 'nodo', [], tree_nodo_temp, self.line, i)
           self.grafico.node(str(tree_nodo.id), tree_nodo.symbol)
 
-        print(tree_nodo.id, " ", tree_nodo.symbol, "padre: ", tree_nodo.father.id, " ", tree_nodo.father.symbol)
+        #print(tree_nodo.id, " ", tree_nodo.symbol, "padre: ", tree_nodo.father.id, " ", tree_nodo.father.symbol)
         tree_nodo_temp.children.append(tree_nodo)
         self.grafico.edge(str(tree_nodo_temp.id), str(tree_nodo.id), ordering="out")
   
       #for i in tree_nodo_temp.children:
         #print(i.symbol, ' hijo de ', tree_nodo_temp.symbol)
+
+  def buscar_nodo_lex(self, root, buscar, lex):
+    if root.symbol == buscar and root.type == 'hoja' and root.lexeme == 'oo':
+      root.lexeme = lex
+    for child in root.children:
+      self.buscar_nodo_lex(child, buscar, lex)
   
   def run(self):
-    print(self.tokens)
+    #print(self.tokens)
     while True:
       #print("\nITERATION ...")
       #self.print_stack(self.stack)
       #self.print_input()
-      
-      print(self.stack[-1].value, '-', self.tokens[0]['type'])
+      #print(self.stack[-1].value, '-', self.tokens[0]['type'], '-', self.tokens[0]['lexeme'])
       if self.stack[-1].value == '$' and self.tokens[0]['type'] == '$':
         print("Todo bien!")
         break
       # cuando son terminales
       if self.stack[-1].terminal:
-        print("terminales")
+        #print("terminales")
         if self.stack[-1].value == self.tokens[0]['type']:
+          bus = self.stack[-1].value
+          self.buscar_nodo_lex(self.root, bus, self.tokens[0]['lexeme'])
+          #print("nodo : -- ", node)
+          #node.lexeme = self.tokens[0]['lexeme']
           self.stack.pop()
           self.tokens.pop(0)
         else:
@@ -158,4 +169,4 @@ class Runner:
         continue
       self.update(self.stack[-1].value, self.tokens[0]['type'], self.stack, self.root)
       #time.sleep(0.5)
-    self.grafico.render(directory='doctest-output').replace('\\', '/')
+    #self.grafico.render(directory='doctest-output').replace('\\', '/')

@@ -268,13 +268,14 @@ algoritmo mi_Algoritmo{
 data5 = '''
 
 algoritmo mi_Algoritmo{
-	definir x como entero;
-  x = 5;
+	definir a, b, c como entero;
+  definir x, z, n como cadena;
+  a = 5;
 }
 '''
 
 # Give the lexer some input
-lexer.input(data4)
+lexer.input(data5)
 
 data_tokens = []
 # Tokenize
@@ -283,11 +284,11 @@ while True:
     if not tok:
         break  # No more input
     #print(tok)
-    print(tok.type, tok.value, tok.lineno, tok.lexpos)
+    #print(tok.type, tok.value, tok.lineno, tok.lexpos)
     my_dict = {'type':tok.type.lower(), 'lexeme':tok.value, 'line':tok.lineno}
     data_tokens.append(my_dict)
 
 my_dict2 ={'type':'$', 'lexeme':'$', 'line':0}
 data_tokens.append(my_dict2)
 
-print(data_tokens)
+
