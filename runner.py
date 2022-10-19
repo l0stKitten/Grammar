@@ -124,7 +124,7 @@ class Runner:
         is_term = self.is_terminal(i)
         if is_term == True:
           tree_nodo =  node_parser(i, 'hoja', [], tree_nodo_temp, self.line, 'oo')
-          self.grafico.node(str(tree_nodo.id), tree_nodo.symbol)
+          self.grafico.node(str(tree_nodo.id), tree_nodo.symbol, style='filled', fillcolor='#F6D2FF')
           
         else:
           tree_nodo =  node_parser(i, 'nodo', [], tree_nodo_temp, self.line, i)

@@ -266,11 +266,16 @@ algoritmo mi_Algoritmo{
 '''
 
 data5 = '''
+funcion variableDevolver <- miFuncion1 ( a, b ){
+	variableDevolver = a + b;
+}
 
 algoritmo mi_Algoritmo{
 	definir a, b, c como entero;
   definir x, z, n como cadena;
   a = 5;
+
+  miFuncion1(c);
 }
 '''
 
