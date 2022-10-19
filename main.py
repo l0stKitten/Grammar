@@ -2,17 +2,17 @@ from runner import Runner
 import mylexer
 
 # scope
-def buscar_id(nodo):
+def buscar_id(nodo, texto):
   if nodo.symbol == 'id':
-    print("Variable encontrada: ", nodo.symbol, " - ", nodo.lexeme)
+    print(texto, nodo.symbol, " - ", nodo.lexeme)
+    
   for child in nodo.children:
-    buscar_id(child)
+    buscar_id(child, texto)
 
 def definicion_var(root):
-  #print(root.symbol)
   if root.symbol == 'define':
     nodo_id = root.father.children[1]
-    buscar_id(nodo_id)
+    buscar_id(nodo_id, "Variable definida: ")
 
   if root.symbol == 'EXPRES8':
     if root.children[0].symbol == 'id' and root.children[1].children[0].symbol == 'ini_parentesis':
@@ -23,16 +23,19 @@ def definicion_var(root):
     definicion_var(child)
 
 def uso_var(root):
-  if root.symbol == 'define':
-    nodo_id = root.father.children[1]
-    buscar_id(nodo_id)
+  if root.symbol == 'EXPRES8':
+    if root.children[0].symbol == 'id' and root.children[1].children[0].symbol == 'ep':
+      print("Variable usada", root.children[0].symbol, " - ", root.children[0].lexeme)
 
   for child in root.children:
-    definicion_var(child)
+    uso_var(child)
 
 data = mylexer.data_tokens
 ejecucion = Runner(data)
 ejecucion.run()
 
 print("---- SCOPE -----")
+print("....... Variables Declaradas .......")
 definicion_var(ejecucion.root)
+print("\n....... Variables Usadas .......")
+uso_var(ejecucion.root)
