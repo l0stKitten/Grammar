@@ -266,16 +266,21 @@ algoritmo mi_Algoritmo{
 '''
 
 data5 = '''
-funcion variableDevolver <- miFuncion1 ( a, b ){
-	variableDevolver = a + b;
+funcion variableDevolver <- miFuncion1 ( a ){
+	variableDevolver = a + 3;
+}
+
+funcion variableDevolver2 <- miFuncion2 ( x ){
+	variableDevolver2 = x;
 }
 
 algoritmo mi_Algoritmo{
 	definir a, b, c como entero;
   definir x, z, n como cadena;
   a = 5;
-
-  miFuncion1(c);
+  c = 4;
+  b = c - 1;
+  miFuncion1(a);
 }
 '''
 

@@ -139,8 +139,16 @@ class Runner:
 
   def buscar_nodo_lex(self, root, buscar, lex):
     if root.symbol == buscar and root.type == 'hoja' and root.lexeme == 'oo':
+      #print(root.symbol, " - ", root.lexeme, " - ", root.father.symbol)
       root.lexeme = lex
+      #print(root.symbol, " - ", root.lexeme, " - ", root.father.symbol)
+    count = 0
     for child in root.children:
+      if child.symbol == 'id' and child.father.symbol == 'FUN' and buscar == 'id' and child.lexeme == 'oo':
+        count += 1
+        #print(child.lexeme)
+        if count == 2:
+          lex = 'oo'
       self.buscar_nodo_lex(child, buscar, lex)
   
   def run(self):

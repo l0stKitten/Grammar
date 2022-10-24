@@ -18,17 +18,24 @@ def definicion_var(root):
     if root.children[0].symbol == 'id' and root.children[1].children[0].symbol == 'ini_parentesis':
       nodo = root.children[0]
       print("Función encontrada: ", nodo.symbol, " - ", nodo.lexeme)
-
+      
   for child in root.children:
     definicion_var(child)
 
 def uso_var(root):
   if root.symbol == 'EXPRES8':
     if root.children[0].symbol == 'id' and root.children[1].children[0].symbol == 'ep':
-      print("Variable usada", root.children[0].symbol, " - ", root.children[0].lexeme)
+      print("Variable usada: ", root.children[0].symbol, " - ", root.children[0].lexeme)
 
   for child in root.children:
     uso_var(child)
+
+def fin_funcion(root):
+  if root.symbol == 'fin_llave' and root.father.symbol == 'FUN':
+    nodo = root.father.children[3]
+    print("Función: ", nodo.lexeme, " terminó")
+  for child in root.children:
+    fin_funcion(child)
 
 data = mylexer.data_tokens
 ejecucion = Runner(data)
@@ -39,3 +46,5 @@ print("....... Variables Declaradas .......")
 definicion_var(ejecucion.root)
 print("\n....... Variables Usadas .......")
 uso_var(ejecucion.root)
+print("\n....... Término de Funciones .......")
+fin_funcion(ejecucion.root)
