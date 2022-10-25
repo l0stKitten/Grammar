@@ -22,3 +22,31 @@ class node_parser:
     self.id = node_count
 
     node_count += 1
+
+class node_scope:
+  def __init__(self, var, token, linea, var_type, scope, asignacion = None):
+    self.var = var
+    self.token = token
+    self.linea = linea
+    self.var_type = var_type
+    self.scope = scope
+    self.asignacion = asignacion
+
+class tabla_simbolos:
+  def __init__(self):
+    self.pila = []
+
+  def insertar(self, elem):
+    self.pila.append(elem)
+
+  def eliminar(self):
+    self.pila.pop()
+
+  def buscar(self, elem):
+    for i in self.pila:
+      if i.nodo.symbol == elem:
+        return i
+  def imprimir(self):
+    for i in self.pila:
+      print(i, " -> ", end=" ")
+    print()

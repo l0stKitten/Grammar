@@ -144,7 +144,8 @@ class Runner:
       #print(root.symbol, " - ", root.lexeme, " - ", root.father.symbol)
     count = 0
     for child in root.children:
-      if child.symbol == 'id' and child.father.symbol == 'FUN' and buscar == 'id' and child.lexeme == 'oo':
+      # and child.father.symbol == 'FUN'
+      if child.symbol == 'id' and buscar == 'id' and child.lexeme == 'oo':
         count += 1
         #print(child.lexeme)
         if count == 2:
